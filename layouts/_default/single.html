@@ -1,0 +1,38 @@
+{{ define "main" }}
+{{ partial "breadcrumb.html" . }}
+<article>
+  <header class="post-header">
+    <h1 class="post-title">{{ .Title | default .LinkTitle }}</h1>
+    {{ $showDate := .Date }}{{ if .Date.IsZero }}{{ $showDate = .Lastmod }}{{ end }}
+    {{ if not $showDate.IsZero }}
+    <p class="post-date">{{ $showDate.Format "2 January 2006" }}</p>
+    {{ end }}
+  </header>
+
+  <div class="post-content">
+    {{ $content := .Content }}
+
+    {{/* Obsidian image: ![[file.png|WxH]] */}}
+    {{ $content = replaceRE `!\[\[([^\]|]+)\|(\d+)x(\d+)\]\]` `<img src="/_assets/$1" width="$2" height="$3" loading="lazy" alt="" class="obsidian-embed">` $content }}
+    {{/* Obsidian image: ![[file.png]] */}}
+    {{ $content = replaceRE `!\[\[([^\]|]+)\]\]` `<img src="/_assets/$1" loading="lazy" alt="" class="obsidian-embed">` $content }}
+
+    {{/* Obsidian wikilinks: [[Page Name]] → yellow link if page found, gray span if not */}}
+    {{ $allPages := .Site.RegularPages }}
+    {{ $contentStr := $content }}
+    {{ range $allPages }}
+      {{ $pageTitle := .Title | default .LinkTitle }}
+      {{ $pageURL   := .RelPermalink }}
+      {{ $linked    := printf `<a href="%s" class="wikilink">%s</a>` $pageURL $pageTitle }}
+      {{ $pattern   := printf `\[\[%s\]\]` $pageTitle }}
+      {{ $contentStr = replaceRE $pattern $linked $contentStr }}
+    {{ end }}
+    {{/* Any remaining [[...]] are unresolved → gray */}}
+    {{ $contentStr = replaceRE `\[\[([^\]]+)\]\]` `<span class="wikilink-dead">$1</span>` $contentStr }}
+
+    {{ $contentStr | safeHTML }}
+  </div>
+</article>
+
+<a class="back-link" href="{{ .Parent.RelPermalink }}">← Back to {{ .Parent.Title }}</a>
+{{ end }}

@@ -1,0 +1,12 @@
+{{ define "main" }}
+{{ with .Content }}<div class="page-intro">{{ . }}</div>{{ end }}
+
+<ul class="folder-list">
+  {{ range where .Site.Sections "Section" "in" site.Params.mainSections }}
+  <li class="folder-item">
+    <a class="folder-link" href="{{ .RelPermalink }}">📁 {{ .Title }}</a>
+    <span class="folder-count">{{ len .RegularPages }} {{ if eq (len .RegularPages) 1 }}book{{ else }}books{{ end }}</span>
+  </li>
+  {{ end }}
+</ul>
+{{ end }}

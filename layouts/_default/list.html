@@ -1,0 +1,17 @@
+{{ define "main" }}
+{{ partial "breadcrumb.html" . }}
+<h1 class="page-title">{{ .Title }}</h1>
+{{ with .Content }}<p class="section-desc">{{ . }}</p>{{ end }}
+
+<ul class="book-list">
+  {{ range .Pages.ByDate.Reverse }}
+  {{ $showDate := .Date }}{{ if .Date.IsZero }}{{ $showDate = .Lastmod }}{{ end }}
+  <li class="book-item">
+    <a class="book-link" href="{{ .RelPermalink }}">{{ .Title | default .LinkTitle }}</a>
+    {{ if not $showDate.IsZero }}
+    <span class="book-meta">{{ $showDate.Format "2 Jan 2006" }}</span>
+    {{ end }}
+  </li>
+  {{ end }}
+</ul>
+{{ end }}

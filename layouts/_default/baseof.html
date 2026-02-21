@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode | default "en" }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} · {{ .Site.Title }}{{ end }}</title>
+  <link rel="stylesheet" href="{{ "css/wasp.css" | relURL }}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="site-title" href="{{ "/" | relURL }}">{{ .Site.Title }}</a>
+    {{ if not .IsHome }}
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu"><span class="hamburger-icon">&#9776;</span></button>
+    {{ end }}
+  </header>
+
+  {{ if .IsHome }}
+  <main class="site-main">
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ else }}
+  <div class="site-body">
+    <aside class="sidebar" id="sidebar">
+      <ul class="tree">
+        {{ range where .Site.Sections "Section" "in" site.Params.mainSections }}
+        {{ $isOpen := eq $.Section .Section }}
+        <li class="tree-folder">
+          <details{{ if $isOpen }} open{{ end }}>
+            <summary class="tree-folder-link{{ if $isOpen }} active{{ end }}">
+              <a href="{{ .RelPermalink }}" onclick="event.stopPropagation()">{{ .Title }}</a>
+            </summary>
+            <ul class="tree-children">
+              {{ range .Pages.ByTitle }}
+              <li class="tree-file{{ if eq $.RelPermalink .RelPermalink }} active{{ end }}">
+                <a href="{{ .RelPermalink }}">{{ .Title | default .LinkTitle }}</a>
+              </li>
+              {{ end }}
+            </ul>
+          </details>
+        </li>
+        {{ end }}
+      </ul>
+    </aside>
+    <main class="site-main">
+      {{ block "main" . }}{{ end }}
+    </main>
+  </div>
+  {{ end }}
+
+  <footer class="site-footer">
+    {{ .Site.Title }} · Built with <a href="https://gohugo.io">Hugo</a>
+    <br>
+    <span class="footer-credit">Theme inspired by <a href="https://github.com/santiyounger/Wasp-Obsidian-Theme">Wasp</a> by <a href="https://github.com/santiyounger">Santi Younger</a></span>
+  </footer>
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const sidebar   = document.getElementById('sidebar');
+    const overlay   = document.getElementById('sidebar-overlay');
+    const header    = document.querySelector('.site-header');
+    if (hamburger) {
+      function open() {
+        sidebar.classList.add('open');
+        overlay.classList.add('open');
+        const icon = hamburger.querySelector('.hamburger-icon');
+        icon.innerHTML = '&#10005;';
+        icon.classList.add('is-close');
+      }
+      function close() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('open');
+        const icon = hamburger.querySelector('.hamburger-icon');
+        icon.innerHTML = '&#9776;';
+        icon.classList.remove('is-close');
+      }
+      hamburger.addEventListener('click', () => {
+        sidebar.classList.contains('open') ? close() : open();
+      });
+      overlay.addEventListener('click', close);
+    }
+  </script>
+</body>
+</html>

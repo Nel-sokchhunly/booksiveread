@@ -1,0 +1,40 @@
+title = "Books I've Read"
+baseURL = '/'
+languageCode = 'en-us'
+ignoreLogs = ['warning-home-page-is-leaf-bundle']
+
+enableEmoji = true
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+  [markup.goldmark.renderer]
+    unsafe = true
+
+[params]
+  sitename = "Books I've Read"
+  defaultColor = "auto"
+  description = "Books I've read"
+  mainSections = ['2026']
+  toc = true
+  tocOpen = false
+  goToTop = true
+
+  [params.author]
+    name = ""
+    email = ""
+    description = ""
+
+[params.webmanifest]
+  name = "Books I've Read"
+  short_name = "Books I've Read"
+  display = "standalone"
+
+[[menu.main]]
+  name = "Home"
+  url = "/"
+  weight = 10
+[[menu.main]]
+  name = "Books"
+  url = "/2026/"
+  weight = 20
