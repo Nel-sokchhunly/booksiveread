@@ -56,7 +56,7 @@ the books also have a few of Jazz record that i can add to my jazz playlist too 
 
 **Next Book?:**
 
-I dont know what to read yet but I want to read Sputnik Sweetheart by Marukami next as I really like his style of writing in this book, but we'll see. maybe I will borrow a book from Litey and read that instead. There might be a chance that I will buy [[កុលាបប៉ៃលិន]] and read that instead too.
+I dont know what to read yet but I want to read Sputnik Sweetheart by Marukami next as I really like his style of writing in this book, but we'll see. maybe I will borrow a book from a friend and read that instead. There might be a chance that I will buy [[កុលាបប៉ៃលិន]] and read that instead too.
 
 only time will tells.
 
